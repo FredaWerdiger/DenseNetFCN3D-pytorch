@@ -203,13 +203,13 @@ class DenseNetFCN(nn.Module):
         for i in range(self.num_transitions):
             db = self.dbs_down[i]
             x = db(x)
-            print(f'down block {i + 1} exit shape: {x.shape}')
+            # print(f'down block {i + 1} exit shape: {x.shape}')
 
             concat_list.append(x)
             td = self.tds[i]
             x = td(x)
         x, feature_list = self.db_bottleneck(x)
-        print(f'bottleneck exit shape: {x.shape}')
+        # print(f'bottleneck exit shape: {x.shape}')
         keep_features = torch.concat(feature_list[1:], dim=1)
         # reverse order of concat list
         concat_list = concat_list[::-1]
@@ -220,7 +220,7 @@ class DenseNetFCN(nn.Module):
             x = torch.concat((x, concat), dim=1)
             db = self.dbs_up[i]
             x, feature_list = db(x)
-            print(f'up block {i + 1} exit shape: {x.shape}')
+            # print(f'up block {i + 1} exit shape: {x.shape}')
             keep_features = torch.concat(feature_list[1:], dim=1)
         x = self.final_conv(x)
         return x
